@@ -10,14 +10,20 @@ Solution has 2 Api Gateway endpoints:
 
 `/get_regions_data` - GET. Only 1 query param: `area_name=<area_name>` . Returns list of objects.
 
-# AWS Architecture
+Its a test project, there is a plenty room for improvements actually :)
+
+# Architecture
 
 ![AWS](/assets/aws.jpg)
+![Regions](/assets/regions.jpg)
+
+`radius` is configurable. So we can change the check area if we need.
 
 # How to
 
 Everything can be deployed with Terraform
 All provider settings are configured in `provider.tf` do not forget to change your s3 backend setting or disable it at all
+Also you need a valid IAM user with admin access(ofc i would do some role asssume with maximum restrictions, but...)
 
 Go to the root location and run:
 
@@ -34,14 +40,18 @@ To get Api Gateway endpoint run
 terraform output -raw api_gw_endpoint
 ```
 
-To push data you can use script from `./scripts/run.py`
+To push data you can use script from `./scripts/run.py`.
 
 ```
-
+pip install shapely requests
+python .\scripts\run.py --url $(terraform output -raw api_gw_endpoint) --points 10
 ```
 
-### What could be done
+### What could be done better
 
 - [ ] Labmda `api`. Send to Kinesis stream using SQS, not using boto3
+- [ ] Integrate auth, right now everyone can access AG endpoints
 - [ ] Use KMS
 - [ ] Terraform: Get rid of hardcoded values
+- [ ] Send an SNS/SQS notification if kinesis or lambda fails
+- [ ] Logs monitoring also would be nice
