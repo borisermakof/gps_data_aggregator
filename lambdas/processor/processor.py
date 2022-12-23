@@ -7,6 +7,7 @@ import json
 from region import Region
 import os
 
+# this data is static and aclually will never change, only extends
 spain_regions_polygon = [
     Region("Malaga",37.83705483588691,-3.62491569589503),
     Region("Barcelona", 40.71097853364055, -0.21915397714503015)
